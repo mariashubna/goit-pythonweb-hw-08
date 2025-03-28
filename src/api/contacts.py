@@ -7,7 +7,6 @@ from src.database.db import get_db
 from src.schemas import (
     ContactModel,
     ContactUpdate,
-    ContactStatusUpdate,
     ContactResponse,
 )
 from src.services.contacts import ContactService
@@ -43,7 +42,7 @@ async def create_contact(body: ContactModel, db: AsyncSession = Depends(get_db))
 
 @router.put("/{contact_id}", response_model=ContactResponse)
 async def update_contact(
-    body: ContactUpdate, contact_id: int, db: AsyncSession = Depends(get_db)
+    body: ContactModel, contact_id: int, db: AsyncSession = Depends(get_db)
 ):
     contact_service = ContactService(db)
     contact = await contact_service.update_contact(contact_id, body)
@@ -55,11 +54,11 @@ async def update_contact(
 
 
 @router.patch("/{contact_id}", response_model=ContactResponse)
-async def update_status_contact(
-    body: ContactStatusUpdate, contact_id: int, db: AsyncSession = Depends(get_db)
+async def update_contact(
+    body: ContactUpdate, contact_id: int, db: AsyncSession = Depends(get_db)
 ):
     contact_service = ContactService(db)
-    contact = await contact_service.update_status_contact(contact_id, body)
+    contact = await contact_service.update_contact(contact_id, body)
     if contact is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="contact not found"

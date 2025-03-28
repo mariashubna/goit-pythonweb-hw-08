@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import Contact
-from src.schemas import ContactModel, ContactUpdate, ContactStatusUpdate
+from src.schemas import ContactModel, ContactUpdate
 
 
 class ContactRepository:
@@ -36,7 +36,10 @@ class ContactRepository:
         return contact
 
     async def update_contact(
-        self, contact_id: int, body: ContactUpdate
+        # self, contact_id: int, body: ContactUpdate
+        self,
+        contact_id: int,
+        body: ContactModel,
     ) -> Contact | None:
         contact = await self.get_contact_by_id(contact_id)
         if contact:
@@ -46,14 +49,4 @@ class ContactRepository:
             await self.db.commit()
             await self.db.refresh(contact)
 
-        return contact
-
-    async def update_status_contact(
-        self, contact_id: int, body: ContactStatusUpdate
-    ) -> Contact | None:
-        contact = await self.get_contact_by_id(contact_id)
-        if contact:
-            contact.done = body.done
-            await self.db.commit()
-            await self.db.refresh(contact)
         return contact

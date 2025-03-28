@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.repository.contacts import ContactRepository
-from src.schemas import ContactModel, ContactUpdate, ContactStatusUpdate
+from src.schemas import ContactModel, ContactUpdate
 
 
 class ContactService:
@@ -19,9 +19,6 @@ class ContactService:
 
     async def update_contact(self, contact_id: int, body: ContactUpdate):
         return await self.contact_repository.update_contact(contact_id, body)
-
-    async def update_status_contact(self, contact_id: int, body: ContactStatusUpdate):
-        return await self.contact_repository.update_status_contact(contact_id, body)
 
     async def remove_contact(self, contact_id: int):
         return await self.contact_repository.remove_contact(contact_id)

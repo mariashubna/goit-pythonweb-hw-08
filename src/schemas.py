@@ -18,8 +18,8 @@ class ContactResponse(ContactModel):
     last_name: str
     email: str
     phone: str
-    birth_date: date
-    additional: str
+    birthday: Optional[date] = None
+    additional_info: Optional[str] = None
     created_at: datetime | None
     updated_at: Optional[datetime] | None
 
@@ -27,8 +27,9 @@ class ContactResponse(ContactModel):
 
 
 class ContactUpdate(ContactModel):
-    done: bool
-
-
-class ContactStatusUpdate(BaseModel):
-    done: bool
+    first_name: Optional[str] = Field(None, min_length=2, max_length=50)
+    last_name: Optional[str] = Field(None, min_length=2, max_length=50)
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = Field(None, max_length=50)
+    birthday: Optional[date] = None
+    additional_info: Optional[str] = None
