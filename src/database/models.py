@@ -1,5 +1,5 @@
-from datetime import date
-from sqlalchemy import String, Integer, Date
+from datetime import date, datetime
+from sqlalchemy import String, Integer, Date, DateTime, func
 from sqlalchemy.orm import mapped_column, Mapped, DeclarativeBase
 
 
@@ -17,3 +17,7 @@ class Contact(Base):
     phone: Mapped[str] = mapped_column(String(20), nullable=False, unique=True)
     birthday: Mapped[date] = mapped_column(Date, nullable=False)
     additional_info: Mapped[str] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.now, onupdate=func.now()
+    )
