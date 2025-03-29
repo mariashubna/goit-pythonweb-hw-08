@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.db import get_db
@@ -16,10 +16,20 @@ router = APIRouter(prefix="/contacts")
 
 @router.get("/", response_model=List[ContactResponse])
 async def read_contacts(
-    skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
+    skip: int = 0,
+    limit: int = 10,
+    q: str | None = Query(None, max_length=50),
+    db: AsyncSession = Depends(get_db),
 ):
     contact_service = ContactService(db)
-    contacts = await contact_service.get_contacts(skip, limit)
+    contacts = await contact_service.get_contacts(skip, limit, q)
+    return contacts
+
+
+@router.get("/birthdays", response_model=List[ContactResponse])
+async def birthdays_now(db: AsyncSession = Depends(get_db)):
+    contact_service = ContactService(db)
+    contacts = await contact_service.get_birthday_list()
     return contacts
 
 

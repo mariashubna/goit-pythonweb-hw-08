@@ -11,8 +11,8 @@ class ContactService:
     async def create_contact(self, body: ContactModel):
         return await self.contact_repository.create_contact(body)
 
-    async def get_contacts(self, skip: int, limit: int):
-        return await self.contact_repository.get_contacts(skip, limit)
+    async def get_contacts(self, skip: int, limit: int, q: str | None = None):
+        return await self.contact_repository.get_contacts(skip, limit, q)
 
     async def get_contact(self, contact_id: int):
         return await self.contact_repository.get_contact_by_id(contact_id)
@@ -22,3 +22,6 @@ class ContactService:
 
     async def remove_contact(self, contact_id: int):
         return await self.contact_repository.remove_contact(contact_id)
+
+    async def get_birthday_list(self):
+        return await self.contact_repository.get_birthday_list()
